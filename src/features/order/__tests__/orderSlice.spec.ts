@@ -1,5 +1,11 @@
 import { v4 } from 'uuid';
-import { addOrder, deleteOrder, updateOrder, reducer } from '../orderSlice';
+import {
+  addOrder,
+  deleteOrder,
+  updateOrder,
+  reducer,
+  makeOrderByIDSelector
+} from '../orderSlice';
 
 jest.mock('uuid');
 
@@ -149,6 +155,47 @@ describe('order slice', () => {
       });
 
       getTimeMock.mockRestore();
+    });
+  });
+
+  describe('selectors', () => {
+    it('should return same order when give same id', () => {
+      const state = {
+        order: {
+          list: [
+            {
+              id: 'id-1',
+              creationDate: 1579000000000,
+              modificationDate: 1579000000000,
+              name: 'test order 1',
+              price: 999,
+              note: 'something to note 1'
+            },
+            {
+              id: 'id-2',
+              creationDate: 1579000000000,
+              modificationDate: 1579000000000,
+              name: 'test order 2',
+              price: 999,
+              note: 'something to note 2'
+            },
+            {
+              id: 'id-3',
+              creationDate: 1579000000000,
+              modificationDate: 1579000000000,
+              name: 'test order 3',
+              price: 999,
+              note: 'something to note 3'
+            }
+          ]
+        }
+      };
+      const selectOrderByID = makeOrderByIDSelector();
+
+      expect(selectOrderByID(state, 'id-2')).toEqual(state.order.list[1]);
+      expect(selectOrderByID(state, 'id-2')).toEqual(state.order.list[1]);
+      expect(selectOrderByID(state, 'id-3')).toEqual(state.order.list[2]);
+      expect(selectOrderByID(state, 'id-3')).toEqual(state.order.list[2]);
     });
   });
 });

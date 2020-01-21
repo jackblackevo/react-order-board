@@ -1,5 +1,6 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, createSelector, PayloadAction } from '@reduxjs/toolkit';
 import { v4 } from 'uuid';
+import { RootState } from '../../app/rootReducer';
 
 interface OrderItem {
   id: string;
@@ -67,3 +68,12 @@ const orderSlice = createSlice({
 
 export const { reducer } = orderSlice;
 export const { addOrder, deleteOrder, updateOrder } = orderSlice.actions;
+
+export const makeOrderByIDSelector = () =>
+  createSelector(
+    [
+      (state: RootState) => state.order.list,
+      (_state: RootState, id: string) => id
+    ],
+    (orderList, id) => orderList.find(order => order.id === id)
+  );
