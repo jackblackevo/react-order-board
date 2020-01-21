@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
 import NewOrderButton from '../features/order/NewOrderButton';
+import OrderList from '../features/order/OrderList';
 
 const Wrapper = styled.div`
   max-width: 800px;
@@ -11,6 +12,7 @@ const Wrapper = styled.div`
 const App: FC = () => (
   <Wrapper>
     <NewOrderButton />
+    <OrderList />
   </Wrapper>
 );
 
