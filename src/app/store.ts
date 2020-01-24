@@ -1,5 +1,7 @@
 import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
+import { createEpicMiddleware } from 'redux-observable';
 import rootReducer from './rootReducer';
+import rootEpic, { dependencies } from './rootEpic';
 import { load, persistStateMiddleware } from './statePersistent';
 
 const preloadedState = {
@@ -33,10 +35,18 @@ const preloadedState = {
   }
 };
 
+const epicMiddleware = createEpicMiddleware({ dependencies });
+
 const store = configureStore({
   reducer: rootReducer,
   preloadedState: load(preloadedState),
-  middleware: [...getDefaultMiddleware(), persistStateMiddleware]
+  middleware: [
+    ...getDefaultMiddleware(),
+    epicMiddleware,
+    persistStateMiddleware
+  ]
 });
+
+epicMiddleware.run(rootEpic);
 
 export default store;

@@ -3,17 +3,17 @@ import { render, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
+import { of } from 'rxjs';
+import { createEpicMiddleware } from 'redux-observable';
 import {
   MemoryRouter as Router,
   Route,
   RouteComponentProps
 } from 'react-router-dom';
 import 'mutationobserver-shim';
-import { v4 } from 'uuid';
 import rootReducer from '../../../../app/rootReducer';
+import rootEpic, { dependencies } from '../../../../app/rootEpic';
 import OrderForm from '../../OrderFormModal/OrderForm';
-
-jest.mock('uuid');
 
 describe('OrderForm component', () => {
   it('should render empty form when url is /new', () => {
@@ -202,17 +202,24 @@ describe('OrderForm component', () => {
   });
 
   it('should add order when submit', async () => {
-    const v4Mock = (v4 as jest.Mock<string>).mockImplementation(
-      () => 'an-uuid'
-    );
-    const getTimeMock = jest
-      .spyOn(Date.prototype, 'getTime')
-      .mockImplementation(() => 1579000000000);
+    const postOrderApiMock = jest
+      .spyOn(dependencies, 'postOrderAPI')
+      .mockImplementation(order =>
+        of({
+          ...order,
+          id: 'an-uuid',
+          creationDate: 1579000000000,
+          modificationDate: 1579000000000
+        })
+      );
 
+    const epicMiddleware = createEpicMiddleware({ dependencies });
     const store = configureStore({
       reducer: rootReducer,
-      preloadedState: { order: { list: [] } }
+      preloadedState: { order: { list: [] } },
+      middleware: [epicMiddleware]
     });
+    epicMiddleware.run(rootEpic);
 
     const { getByTestId } = render(
       <Provider store={store}>
@@ -246,15 +253,21 @@ describe('OrderForm component', () => {
       }
     ]);
 
-    v4Mock.mockReset();
-    getTimeMock.mockRestore();
+    postOrderApiMock.mockRestore();
   });
 
   it('should update order when submit', async () => {
-    const getTimeMock = jest
-      .spyOn(Date.prototype, 'getTime')
-      .mockImplementation(() => 1579000000000);
+    const patchOrderApiMock = jest
+      .spyOn(dependencies, 'patchOrderAPI')
+      .mockImplementation(order =>
+        of({
+          ...order,
+          creationDate: 1578888888888,
+          modificationDate: 1579000000000
+        })
+      );
 
+    const epicMiddleware = createEpicMiddleware({ dependencies });
     const store = configureStore({
       reducer: rootReducer,
       preloadedState: {
@@ -270,8 +283,10 @@ describe('OrderForm component', () => {
             }
           ]
         }
-      }
+      },
+      middleware: [epicMiddleware]
     });
+    epicMiddleware.run(rootEpic);
 
     const { getByTestId } = render(
       <Provider store={store}>
@@ -320,10 +335,15 @@ describe('OrderForm component', () => {
       }
     ]);
 
-    getTimeMock.mockRestore();
+    patchOrderApiMock.mockRestore();
   });
 
   it('should delete order when delete', async () => {
+    const deleteOrderApiMock = jest
+      .spyOn(dependencies, 'deleteOrderAPI')
+      .mockImplementation(_orderID => of(undefined));
+
+    const epicMiddleware = createEpicMiddleware({ dependencies });
     const store = configureStore({
       reducer: rootReducer,
       preloadedState: {
@@ -339,8 +359,10 @@ describe('OrderForm component', () => {
             }
           ]
         }
-      }
+      },
+      middleware: [epicMiddleware]
     });
+    epicMiddleware.run(rootEpic);
 
     const { getByTestId } = render(
       <Provider store={store}>
@@ -374,5 +396,7 @@ describe('OrderForm component', () => {
     });
 
     expect(store.getState().order.list).toEqual([]);
+
+    deleteOrderApiMock.mockRestore();
   });
 });
