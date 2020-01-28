@@ -77,7 +77,23 @@ const Button = styled.div`
   }
 `;
 
-const NewOrderButton: FC = () => {
+interface Props {
+  isGlowingVisible: boolean;
+  onClick: () => void;
+}
+
+export const PureNewOrderButton: FC<Props> = ({
+  isGlowingVisible,
+  onClick
+}) => (
+  <GlowingWrapper isVisible={isGlowingVisible}>
+    <Button data-testid="button" onClick={onClick}>
+      New Order
+    </Button>
+  </GlowingWrapper>
+);
+
+export default () => {
   const orderList = useSelector((state: RootState) => state.order.list);
 
   const history = useHistory();
@@ -86,12 +102,9 @@ const NewOrderButton: FC = () => {
   };
 
   return (
-    <GlowingWrapper isVisible={orderList.length === 0}>
-      <Button data-testid="button" onClick={handleButtonClick}>
-        New Order
-      </Button>
-    </GlowingWrapper>
+    <PureNewOrderButton
+      isGlowingVisible={orderList.length === 0}
+      onClick={handleButtonClick}
+    />
   );
 };
-
-export default NewOrderButton;

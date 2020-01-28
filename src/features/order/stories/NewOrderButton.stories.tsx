@@ -1,26 +1,21 @@
-import React, { FC, ReactNode } from 'react';
-import { configureStore } from '@reduxjs/toolkit';
-import { Provider } from 'react-redux';
-import { MemoryRouter as Router } from 'react-router-dom';
-import { DecoratorFunction } from '@storybook/addons';
-import rootReducer from '../../../app/rootReducer';
-import NewOrderButton from '../NewOrderButton';
+import React, { FC } from 'react';
+import { action } from '@storybook/addon-actions';
+import { boolean } from '@storybook/addon-knobs';
+import { PureNewOrderButton } from '../NewOrderButton';
 
-const store = configureStore({
-  reducer: rootReducer,
-  preloadedState: { order: { list: [] } }
-});
+const actionsData = {
+  onClick: action('onClick')
+};
 
-export const Default: FC = () => <NewOrderButton />;
+export const Default: FC = () => {
+  const isGlowingVisible = boolean('isGlowingVisible', true);
+
+  return (
+    <PureNewOrderButton isGlowingVisible={isGlowingVisible} {...actionsData} />
+  );
+};
 
 export default {
   title: 'NewOrderButton',
-  component: NewOrderButton,
-  decorators: [
-    story => (
-      <Provider store={store}>
-        <Router>{story()}</Router>
-      </Provider>
-    )
-  ] as DecoratorFunction<ReactNode>[]
+  component: PureNewOrderButton
 };
