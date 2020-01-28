@@ -1,40 +1,31 @@
-import React, { FC, ReactNode } from 'react';
-import { MemoryRouter as Router } from 'react-router-dom';
+import React, { FC } from 'react';
+import { action } from '@storybook/addon-actions';
 import { text, number } from '@storybook/addon-knobs';
-import { DecoratorFunction } from '@storybook/addons';
-import OrderItem from '../OrderItem';
+import { PureOrderItem } from '../OrderItem';
 
-const defaultOrderData = {
-  id: 'an-id',
-  creationDate: 1579000000000,
-  modificationDate: 1579000000000,
-  name: 'test order',
-  price: 999,
-  note: 'something to note'
+const actionsData = {
+  onClick: action('onClick')
 };
 
-export const Default: FC = () => <OrderItem index={0} {...defaultOrderData} />;
-
-export const asDynamicVariables: FC = () => {
-  const name = text('name', 'typing your order name');
+export const Default: FC = () => {
+  const id = text('id', 'an-id');
+  const name = text('name', 'test order name');
   const price = number('price', 1);
-  const note = text('note', 'typing your note');
+  const note = text('note', 'test note');
 
   return (
-    <OrderItem
+    <PureOrderItem
       index={0}
-      {...defaultOrderData}
+      id={id}
       name={name}
       price={price}
       note={note}
+      {...actionsData}
     />
   );
 };
 
 export default {
   title: 'OrderItem',
-  component: OrderItem,
-  decorators: [story => <Router>{story()}</Router>] as DecoratorFunction<
-    ReactNode
-  >[]
+  component: PureOrderItem
 };

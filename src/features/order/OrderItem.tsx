@@ -41,6 +41,40 @@ const TextWrapper = styled.span`
   line-height: 1.5;
 `;
 
+interface PureOrderItemProps extends Props {
+  onClick: (id: string) => void;
+}
+
+export const PureOrderItem: FC<PureOrderItemProps> = ({
+  index,
+  id,
+  name,
+  price,
+  note,
+  onClick
+}) => (
+  <>
+    <Wrapper>
+      <Row data-testid="row" onClick={() => onClick(id)}>
+        <Column percent="10%">
+          <TextWrapper data-testid="no">{index + 1}</TextWrapper>
+        </Column>
+        <Column percent="30%">
+          <TextWrapper data-testid="name">{name}</TextWrapper>
+        </Column>
+        <Column percent="15%">
+          <TextWrapper data-testid="price">
+            {price.toLocaleString()}
+          </TextWrapper>
+        </Column>
+        <Column percent="45%">
+          <TextWrapper data-testid="note">{note}</TextWrapper>
+        </Column>
+      </Row>
+    </Wrapper>
+  </>
+);
+
 interface Props {
   index: number;
   id: string;
@@ -49,34 +83,11 @@ interface Props {
   note: string;
 }
 
-const OrderItem: FC<Props> = ({ index, id, name, price, note }) => {
+export default (props => {
   const history = useHistory();
-  const handleRowClick = () => {
+  const handleRowClick = (id: string) => {
     history.push(`/order/${id}`);
   };
 
-  return (
-    <>
-      <Wrapper>
-        <Row data-testid="row" onClick={handleRowClick}>
-          <Column percent="10%">
-            <TextWrapper data-testid="no">{index + 1}</TextWrapper>
-          </Column>
-          <Column percent="30%">
-            <TextWrapper data-testid="name">{name}</TextWrapper>
-          </Column>
-          <Column percent="15%">
-            <TextWrapper data-testid="price">
-              {price.toLocaleString()}
-            </TextWrapper>
-          </Column>
-          <Column percent="45%">
-            <TextWrapper data-testid="note">{note}</TextWrapper>
-          </Column>
-        </Row>
-      </Wrapper>
-    </>
-  );
-};
-
-export default OrderItem;
+  return <PureOrderItem {...props} onClick={handleRowClick} />;
+}) as FC<Props>;
