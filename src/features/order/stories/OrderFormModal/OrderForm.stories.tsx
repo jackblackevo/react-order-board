@@ -1,54 +1,36 @@
-import React, { FC, ReactNode } from 'react';
-import { configureStore } from '@reduxjs/toolkit';
-import { Provider } from 'react-redux';
-import { MemoryRouter as Router, Route } from 'react-router-dom';
+import React, { FC } from 'react';
 import { action } from '@storybook/addon-actions';
-import { DecoratorFunction } from '@storybook/addons';
-import rootReducer from '../../../../app/rootReducer';
-import OrderForm from '../../OrderFormModal/OrderForm';
+import { PureOrderForm } from '../../OrderFormModal/OrderForm';
 
-const store = configureStore({
-  reducer: rootReducer,
-  preloadedState: {
-    order: {
-      list: [
-        {
-          id: 'an-id',
-          creationDate: 1579000000000,
-          modificationDate: 1579000000000,
-          name: 'test order',
-          price: 999,
-          note: 'something to note'
-        }
-      ]
-    }
-  }
-});
+const orderFormData = {
+  name: 'test order',
+  price: 999,
+  note: 'something to note',
+  isDeletable: true
+};
 
 const actionsData = {
+  onDelete: action('onDelete'),
+  onCancel: action('onCancel'),
+  onSubmit: action('onSubmit'),
   onUserInteractedChange: action('onUserInteractedChange')
 };
 
 export const NewOrder: FC = () => (
-  <Router initialEntries={['/new']}>
-    <Route path="/new">
-      <OrderForm {...actionsData} />
-    </Route>
-  </Router>
+  <PureOrderForm
+    name={''}
+    price={0}
+    note={''}
+    isDeletable={false}
+    {...actionsData}
+  />
 );
 
 export const UpdateOrder: FC = () => (
-  <Router initialEntries={['/order/an-id']}>
-    <Route path="/order/:orderID">
-      <OrderForm {...actionsData} />
-    </Route>
-  </Router>
+  <PureOrderForm {...orderFormData} {...actionsData} />
 );
 
 export default {
   title: 'OrderFormModal/OrderForm',
-  component: OrderForm,
-  decorators: [
-    story => <Provider store={store}>{story()}</Provider>
-  ] as DecoratorFunction<ReactNode>[]
+  component: PureOrderForm
 };
