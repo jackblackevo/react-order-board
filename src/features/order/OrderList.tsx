@@ -9,23 +9,32 @@ const Container = styled.div`
   width: 99%;
 `;
 
-const OrderList: FC = () => {
+interface Props {
+  orderList: {
+    id: string;
+    name: string;
+    price: number;
+    note: string;
+  }[];
+}
+
+export const PureOrderList: FC<Props> = ({ orderList }) => (
+  <Container data-testid="container">
+    {orderList.map(({ id, name, price, note }, index) => (
+      <OrderItem
+        key={id}
+        index={index}
+        id={id}
+        name={name}
+        price={price}
+        note={note}
+      />
+    ))}
+  </Container>
+);
+
+export default () => {
   const orderList = useSelector((state: RootState) => state.order.list);
 
-  return (
-    <Container data-testid="container">
-      {orderList.map(({ id, name, price, note }, index) => (
-        <OrderItem
-          key={id}
-          index={index}
-          id={id}
-          name={name}
-          price={price}
-          note={note}
-        />
-      ))}
-    </Container>
-  );
+  return <PureOrderList orderList={orderList} />;
 };
-
-export default OrderList;

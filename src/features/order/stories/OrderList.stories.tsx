@@ -1,39 +1,44 @@
 import React, { FC, ReactNode } from 'react';
-import { configureStore } from '@reduxjs/toolkit';
-import { Provider } from 'react-redux';
 import { MemoryRouter as Router } from 'react-router-dom';
+import { object } from '@storybook/addon-knobs';
 import { DecoratorFunction } from '@storybook/addons';
-import rootReducer from '../../../app/rootReducer';
-import OrderList from '../OrderList';
+import { PureOrderList } from '../OrderList';
 
-const store = configureStore({
-  reducer: rootReducer,
-  preloadedState: {
-    order: {
-      list: [
-        {
-          id: 'an-id',
-          creationDate: 1579000000000,
-          modificationDate: 1579000000000,
-          name: 'test order',
-          price: 999,
-          note: 'something to note'
-        }
-      ]
+export const Default: FC = () => {
+  const orderList = object('orderList', [
+    {
+      id: 'id-1',
+      creationDate: 1579000000000,
+      modificationDate: 1579000000000,
+      name: 'test order 1',
+      price: 999,
+      note: 'something to note 1'
+    },
+    {
+      id: 'id-2',
+      creationDate: 1579000000000,
+      modificationDate: 1579000000000,
+      name: 'test order 2',
+      price: 999,
+      note: 'something to note 2'
+    },
+    {
+      id: 'id-3',
+      creationDate: 1579000000000,
+      modificationDate: 1579000000000,
+      name: 'test order 3',
+      price: 999,
+      note: 'something to note 3'
     }
-  }
-});
+  ]);
 
-export const Default: FC = () => <OrderList />;
+  return <PureOrderList orderList={orderList} />;
+};
 
 export default {
   title: 'OrderList',
-  component: OrderList,
-  decorators: [
-    story => (
-      <Provider store={store}>
-        <Router>{story()}</Router>
-      </Provider>
-    )
-  ] as DecoratorFunction<ReactNode>[]
+  component: PureOrderList,
+  decorators: [story => <Router>{story()}</Router>] as DecoratorFunction<
+    ReactNode
+  >[]
 };
