@@ -2,9 +2,11 @@ import React, { FC, ReactNode } from 'react';
 import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
 import { MemoryRouter as Router, Route } from 'react-router-dom';
+import { action } from '@storybook/addon-actions';
+import { boolean } from '@storybook/addon-knobs';
 import { DecoratorFunction } from '@storybook/addons';
 import rootReducer from '../../../../app/rootReducer';
-import OrderFormModal from '../../OrderFormModal';
+import { PureOrderFormModal } from '../../OrderFormModal';
 
 const store = configureStore({
   reducer: rootReducer,
@@ -24,25 +26,38 @@ const store = configureStore({
   }
 });
 
-export const NewOrder: FC = () => (
-  <Router initialEntries={['/new']}>
-    <Route path="/new">
-      <OrderFormModal />
-    </Route>
-  </Router>
-);
+const actionsData = {
+  onOverlayClick: action('onOverlayClick'),
+  onUserInteractedChange: action('onUserInteractedChange')
+};
 
-export const UpdateOrder: FC = () => (
-  <Router initialEntries={['/order/an-id']}>
-    <Route path="/order/:orderID">
-      <OrderFormModal />
-    </Route>
-  </Router>
-);
+export const NewOrder: FC = () => {
+  const isUnSafeExit = boolean('isUnSafeExit', false);
+
+  return (
+    <Router initialEntries={['/new']}>
+      <Route path="/new">
+        <PureOrderFormModal isUnSafeExit={isUnSafeExit} {...actionsData} />
+      </Route>
+    </Router>
+  );
+};
+
+export const UpdateOrder: FC = () => {
+  const isUnSafeExit = boolean('isUnSafeExit', false);
+
+  return (
+    <Router initialEntries={['/order/an-id']}>
+      <Route path="/order/:orderID">
+        <PureOrderFormModal isUnSafeExit={isUnSafeExit} {...actionsData} />
+      </Route>
+    </Router>
+  );
+};
 
 export default {
   title: 'OrderFormModal',
-  component: OrderFormModal,
+  component: PureOrderFormModal,
   decorators: [
     story => <Provider store={store}>{story()}</Provider>
   ] as DecoratorFunction<ReactNode>[]
