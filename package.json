@@ -81,6 +81,7 @@
     "@types/uuid": "^3.4.6",
     "eslint-config-prettier": "^6.9.0",
     "eslint-plugin-prettier": "^3.1.2",
+    "gh-pages": "^2.2.0",
     "husky": "^4.0.10",
     "lint-staged": "^10.0.1",
     "mutationobserver-shim": "^0.3.3",
