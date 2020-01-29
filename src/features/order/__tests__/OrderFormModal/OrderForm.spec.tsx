@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, act } from '@testing-library/react';
+import { render, act, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
@@ -398,5 +398,63 @@ describe('OrderForm component', () => {
     expect(store.getState().order.list).toEqual([]);
 
     deleteOrderApiMock.mockRestore();
+  });
+
+  it('should prevent whitespace when input value start or end with whitespace', async () => {
+    const postOrderApiMock = jest
+      .spyOn(dependencies, 'postOrderAPI')
+      .mockImplementation(order =>
+        of({
+          ...order,
+          id: 'an-uuid',
+          creationDate: 1579000000000,
+          modificationDate: 1579000000000
+        })
+      );
+
+    const epicMiddleware = createEpicMiddleware({ dependencies });
+    const store = configureStore({
+      reducer: rootReducer,
+      preloadedState: { order: { list: [] } },
+      middleware: [epicMiddleware]
+    });
+    epicMiddleware.run(rootEpic);
+
+    const { getByTestId } = render(
+      <Provider store={store}>
+        <Router initialEntries={['/new']}>
+          <Route path="/new">
+            <OrderForm onUserInteractedChange={() => {}} />
+          </Route>
+        </Router>
+      </Provider>
+    );
+
+    await act(async () => {
+      await userEvent.type(getByTestId('name'), ' order name ');
+      fireEvent.blur(getByTestId('name'));
+
+      await userEvent.type(getByTestId('price'), ' 111 ');
+      fireEvent.blur(getByTestId('price'));
+
+      await userEvent.type(getByTestId('note'), ' note something ');
+      fireEvent.blur(getByTestId('note'));
+    });
+
+    expect((getByTestId('name') as HTMLInputElement).value).toBe('order name');
+    expect((getByTestId('price') as HTMLInputElement).value).toBe('');
+    expect((getByTestId('note') as HTMLInputElement).value).toBe(
+      'note something'
+    );
+
+    expect(store.getState().order.list).toEqual([]);
+
+    await act(async () => {
+      userEvent.click(getByTestId('submit'));
+    });
+
+    expect(store.getState().order.list).toEqual([]);
+
+    postOrderApiMock.mockRestore();
   });
 });

@@ -82,6 +82,8 @@ export const PureOrderForm: FC<PureOrderFormProps> = ({
           placeholder="訂單名稱"
           autoComplete="off"
           defaultValue={name}
+          onChange={({ target }) => (target.value = target.value.trimStart())}
+          onBlur={({ target }) => (target.value = target.value.trim())}
           ref={register({ required: '請輸入訂單名稱' })}
           isError={!!errors.name}
         />
@@ -115,6 +117,8 @@ export const PureOrderForm: FC<PureOrderFormProps> = ({
           placeholder="備註"
           rows={3}
           defaultValue={note}
+          onChange={({ target }) => (target.value = target.value.trimStart())}
+          onBlur={({ target }) => (target.value = target.value.trim())}
           ref={register}
         />
       </Row>
