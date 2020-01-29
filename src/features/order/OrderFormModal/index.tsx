@@ -16,7 +16,33 @@ const TopRow = styled.div`
   align-items: center;
 `;
 
-const OrderFormModal: FC = () => {
+interface Props {
+  isUnSafeExit: boolean;
+  onOverlayClick: () => void;
+  onUserInteractedChange: (isUserInteracted: boolean) => void;
+}
+
+export const PureOrderFormModal: FC<Props> = ({
+  isUnSafeExit,
+  onOverlayClick,
+  onUserInteractedChange
+}) => (
+  <Overlay data-testid="overlay" onClick={onOverlayClick}>
+    <Container
+      onClick={event => event.stopPropagation()}
+      isShakeModal={isUnSafeExit}
+    >
+      <TopRow>
+        {isUnSafeExit && (
+          <ErrorMessage>尚未送出編輯，放棄請按「取消」</ErrorMessage>
+        )}
+      </TopRow>
+      <OrderForm onUserInteractedChange={onUserInteractedChange} />
+    </Container>
+  </Overlay>
+);
+
+export default () => {
   const [isUserInteracted, setIsUserInteracted] = useState(false);
   const [isUnSafeExit, setIsUnSafeExit] = useState(false);
 
@@ -61,21 +87,11 @@ const OrderFormModal: FC = () => {
   };
 
   return createPortal(
-    <Overlay data-testid="overlay" onClick={handleOverlayClick}>
-      <Container
-        onClick={event => event.stopPropagation()}
-        isShakeModal={isUnSafeExit}
-      >
-        <TopRow>
-          {isUnSafeExit && (
-            <ErrorMessage>尚未送出編輯，放棄請按「取消」</ErrorMessage>
-          )}
-        </TopRow>
-        <OrderForm onUserInteractedChange={setIsUserInteracted} />
-      </Container>
-    </Overlay>,
+    <PureOrderFormModal
+      isUnSafeExit={isUnSafeExit}
+      onOverlayClick={handleOverlayClick}
+      onUserInteractedChange={setIsUserInteracted}
+    />,
     rootElemRef.current
   );
 };
-
-export default OrderFormModal;

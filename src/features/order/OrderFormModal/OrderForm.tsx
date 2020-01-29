@@ -6,7 +6,7 @@ import {
   useHistory,
   Redirect
 } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
+import { useForm, OnSubmit } from 'react-hook-form';
 import styled from 'styled-components';
 import {
   addOrder,
@@ -40,13 +40,26 @@ interface FormValues {
   note: string;
 }
 
-interface Props {
-  onUserInteractedChange: (isUserInteracted: boolean) => void;
+interface PureOrderFormProps extends Props {
+  name: string;
+  price: number;
+  note: string;
+  isDeletable: boolean;
+  onCancel: () => void;
+  onDelete: () => void;
+  onSubmit: OnSubmit<FormValues>;
 }
 
-const OrderForm: FC<Props> = ({ onUserInteractedChange }) => {
-  const { orderID } = useParams();
-  const newOrderMatch = useRouteMatch({ path: '/new' });
+export const PureOrderForm: FC<PureOrderFormProps> = ({
+  name,
+  price,
+  note,
+  isDeletable,
+  onCancel,
+  onDelete,
+  onSubmit,
+  onUserInteractedChange
+}) => {
   const {
     handleSubmit: makeSubmitHandler,
     register,
@@ -54,41 +67,11 @@ const OrderForm: FC<Props> = ({ onUserInteractedChange }) => {
     formState: { dirty }
   } = useForm<FormValues>({ mode: 'onBlur' });
 
-  const order = useSelector((state: RootState) =>
-    selectOrderByID(state, orderID || '')
-  );
-
   useEffect(() => {
     onUserInteractedChange(dirty);
   }, [onUserInteractedChange, dirty]);
 
-  const history = useHistory();
-  const handleClose = () => {
-    history.push('/');
-  };
-
-  const dispatch = useDispatch();
-  const handleSubmit = makeSubmitHandler(({ name, price, note = '' }) => {
-    if (orderID) {
-      dispatch(updateOrder({ id: orderID, name, price: Number(price), note }));
-    } else {
-      dispatch(addOrder({ name, price: Number(price), note }));
-    }
-    handleClose();
-  });
-
-  const handleDelete = () => {
-    if (orderID) {
-      dispatch(deleteOrder(orderID));
-    }
-    handleClose();
-  };
-
-  const { name, price, note } = order || { name: '', price: 0, note: '' };
-
-  if (!newOrderMatch && !order) {
-    return <Redirect to="/" />;
-  }
+  const handleSubmit = makeSubmitHandler(onSubmit);
 
   return (
     <form onSubmit={handleSubmit}>
@@ -137,13 +120,9 @@ const OrderForm: FC<Props> = ({ onUserInteractedChange }) => {
       </Row>
 
       <Control>
-        <CancelButton data-testid="cancel" value="取消" onClick={handleClose} />
-        {orderID && (
-          <DeleteButton
-            data-testid="delete"
-            value="刪除"
-            onClick={handleDelete}
-          />
+        <CancelButton data-testid="cancel" value="取消" onClick={onCancel} />
+        {isDeletable && (
+          <DeleteButton data-testid="delete" value="刪除" onClick={onDelete} />
         )}
         <SubmitButton data-testid="submit" value="送出" />
       </Control>
@@ -151,4 +130,56 @@ const OrderForm: FC<Props> = ({ onUserInteractedChange }) => {
   );
 };
 
-export default OrderForm;
+interface Props {
+  onUserInteractedChange: (isUserInteracted: boolean) => void;
+}
+
+export default (({ onUserInteractedChange }) => {
+  const { orderID } = useParams();
+  const newOrderMatch = useRouteMatch({ path: '/new' });
+
+  const order = useSelector((state: RootState) =>
+    selectOrderByID(state, orderID || '')
+  );
+
+  const history = useHistory();
+  const handleClose = () => {
+    history.push('/');
+  };
+
+  const dispatch = useDispatch();
+  const handleSubmit = ({ name, price, note = '' }: FormValues) => {
+    if (orderID) {
+      dispatch(updateOrder({ id: orderID, name, price: Number(price), note }));
+    } else {
+      dispatch(addOrder({ name, price: Number(price), note }));
+    }
+    handleClose();
+  };
+
+  const handleDelete = () => {
+    if (orderID) {
+      dispatch(deleteOrder(orderID));
+    }
+    handleClose();
+  };
+
+  const { name, price, note } = order || { name: '', price: 0, note: '' };
+
+  if (!newOrderMatch && !order) {
+    return <Redirect to="/" />;
+  }
+
+  return (
+    <PureOrderForm
+      name={name}
+      price={price}
+      note={note}
+      isDeletable={!!orderID}
+      onDelete={handleDelete}
+      onCancel={handleClose}
+      onSubmit={handleSubmit}
+      onUserInteractedChange={onUserInteractedChange}
+    />
+  );
+}) as FC<Props>;
