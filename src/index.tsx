@@ -31,7 +31,7 @@ render(
   <>
     <GlobalStyle />
     <Provider store={store}>
-      <Router>
+      <Router basename="/react-order-board">
         <App />
       </Router>
     </Provider>
