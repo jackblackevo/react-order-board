@@ -2,6 +2,8 @@ import React, { forwardRef, useRef, FC, InputHTMLAttributes } from 'react';
 import styled, { css } from 'styled-components';
 
 const inputStyles = css`
+  appearance: none;
+
   border: 1px solid #d9dadc;
   border-radius: 0;
 
