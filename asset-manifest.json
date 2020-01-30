@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.js": "/react-order-board/static/js/main.fdbd8624.chunk.js",
-    "main.js.map": "/react-order-board/static/js/main.fdbd8624.chunk.js.map",
+    "main.js": "/react-order-board/static/js/main.1c621506.chunk.js",
+    "main.js.map": "/react-order-board/static/js/main.1c621506.chunk.js.map",
     "runtime-main.js": "/react-order-board/static/js/runtime-main.18174296.js",
     "runtime-main.js.map": "/react-order-board/static/js/runtime-main.18174296.js.map",
-    "static/js/2.08aee6d3.chunk.js": "/react-order-board/static/js/2.08aee6d3.chunk.js",
-    "static/js/2.08aee6d3.chunk.js.map": "/react-order-board/static/js/2.08aee6d3.chunk.js.map",
+    "static/js/2.f5ca4dbd.chunk.js": "/react-order-board/static/js/2.f5ca4dbd.chunk.js",
+    "static/js/2.f5ca4dbd.chunk.js.map": "/react-order-board/static/js/2.f5ca4dbd.chunk.js.map",
     "index.html": "/react-order-board/index.html",
-    "precache-manifest.406cd721d3e702807cf60e933d9b2dac.js": "/react-order-board/precache-manifest.406cd721d3e702807cf60e933d9b2dac.js",
+    "precache-manifest.a9ecdaf25647d8ffddd1626c4b9c49f0.js": "/react-order-board/precache-manifest.a9ecdaf25647d8ffddd1626c4b9c49f0.js",
     "service-worker.js": "/react-order-board/service-worker.js",
-    "static/js/2.08aee6d3.chunk.js.LICENSE": "/react-order-board/static/js/2.08aee6d3.chunk.js.LICENSE"
+    "static/js/2.f5ca4dbd.chunk.js.LICENSE": "/react-order-board/static/js/2.f5ca4dbd.chunk.js.LICENSE"
   },
   "entrypoints": [
     "static/js/runtime-main.18174296.js",
-    "static/js/2.08aee6d3.chunk.js",
-    "static/js/main.fdbd8624.chunk.js"
+    "static/js/2.f5ca4dbd.chunk.js",
+    "static/js/main.1c621506.chunk.js"
   ]
 }
