@@ -16,7 +16,7 @@ import {
 } from '../orderSlice';
 import { RootState } from '../../../app/rootReducer';
 import ErrorMessage from './ErrorMessage';
-import { Input, TextArea } from './fields';
+import { CompositionInput, TextArea } from './fields';
 import { CancelButton, DeleteButton, SubmitButton } from './buttons';
 
 const selectOrderByID = makeOrderByIDSelector();
@@ -76,7 +76,7 @@ export const PureOrderForm: FC<PureOrderFormProps> = ({
   return (
     <form onSubmit={handleSubmit}>
       <Row>
-        <Input
+        <CompositionInput
           data-testid="name"
           name="name"
           placeholder="訂單名稱"
@@ -91,7 +91,7 @@ export const PureOrderForm: FC<PureOrderFormProps> = ({
       </Row>
 
       <Row>
-        <Input
+        <CompositionInput
           data-testid="price"
           name="price"
           placeholder="訂單金額"
