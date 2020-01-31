@@ -1,5 +1,5 @@
-import React, { forwardRef, useRef, FC, InputHTMLAttributes } from 'react';
-import styled, { css } from 'styled-components';
+import React, { forwardRef, useRef, InputHTMLAttributes } from 'react';
+import styled, { css, StyledComponentInnerOtherProps } from 'styled-components';
 
 const inputStyles = css`
   appearance: none;
@@ -35,7 +35,11 @@ const Input = styled.input<{ isError: boolean }>`
   ${props => (props.isError ? 'border-color: #eb1e32;' : '')}
 `;
 
-export const CompositionInput = forwardRef((({ onChange, ...props }, ref) => {
+export const CompositionInput = forwardRef<
+  HTMLInputElement,
+  InputHTMLAttributes<HTMLInputElement> &
+    StyledComponentInnerOtherProps<typeof Input>
+>(({ onChange, ...props }, ref) => {
   const isComposingRef = useRef(false);
 
   return (
@@ -47,7 +51,7 @@ export const CompositionInput = forwardRef((({ onChange, ...props }, ref) => {
       onChange={event => !isComposingRef.current && onChange && onChange(event)}
     />
   );
-}) as FC<InputHTMLAttributes<HTMLInputElement> & { isError: boolean }>);
+});
 
 export const TextArea = styled.textarea`
   ${inputStyles}
