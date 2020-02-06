@@ -86,7 +86,7 @@ interface Props {
 export default (props => {
   const history = useHistory();
   const handleRowClick = (id: string) => {
-    history.push(`/order/${id}`);
+    history.push(`/orders/${id}`);
   };
 
   return <PureOrderItem {...props} onClick={handleRowClick} />;

@@ -13,11 +13,11 @@ import {
   updateOrder,
   deleteOrder,
   makeOrderByIDSelector
-} from '../orderSlice';
-import { RootState } from '../../../app/rootReducer';
-import ErrorMessage from './ErrorMessage';
-import { CompositionInput, TextArea } from './fields';
-import { CancelButton, DeleteButton, SubmitButton } from './buttons';
+} from '../ordersList/ordersSlice';
+import { RootState } from '../../app/rootReducer';
+import FormErrorMessage from './FormErrorMessage';
+import { CompositionInput, TextArea } from './formFields';
+import { CancelButton, DeleteButton, SubmitButton } from './formButtons';
 
 const selectOrderByID = makeOrderByIDSelector();
 
@@ -87,7 +87,9 @@ export const PureOrderForm: FC<PureOrderFormProps> = ({
           ref={register({ required: '請輸入訂單名稱' })}
           isError={!!errors.name}
         />
-        {errors.name && <ErrorMessage>{errors.name.message}</ErrorMessage>}
+        {errors.name && (
+          <FormErrorMessage>{errors.name.message}</FormErrorMessage>
+        )}
       </Row>
 
       <Row>
@@ -107,7 +109,9 @@ export const PureOrderForm: FC<PureOrderFormProps> = ({
           })}
           isError={!!errors.price}
         />
-        {errors.price && <ErrorMessage>{errors.price.message}</ErrorMessage>}
+        {errors.price && (
+          <FormErrorMessage>{errors.price.message}</FormErrorMessage>
+        )}
       </Row>
 
       <Row>

@@ -15,7 +15,7 @@ describe('NewOrderButton component', () => {
   it('should link to /new when click button', () => {
     const store = configureStore({
       reducer: rootReducer,
-      preloadedState: { order: { list: [] } }
+      preloadedState: { orders: { list: [] } }
     });
 
     let locationObj: RouteComponentProps['location'] | undefined;

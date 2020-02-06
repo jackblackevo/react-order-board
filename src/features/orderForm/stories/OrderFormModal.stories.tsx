@@ -5,13 +5,13 @@ import { MemoryRouter as Router, Route } from 'react-router-dom';
 import { action } from '@storybook/addon-actions';
 import { boolean } from '@storybook/addon-knobs';
 import { DecoratorFunction } from '@storybook/addons';
-import rootReducer from '../../../../app/rootReducer';
-import { PureOrderFormModal } from '../../OrderFormModal';
+import rootReducer from '../../../app/rootReducer';
+import { PureOrderFormModal } from '../OrderFormModal';
 
 const store = configureStore({
   reducer: rootReducer,
   preloadedState: {
-    order: {
+    orders: {
       list: [
         {
           id: 'an-id',
@@ -47,8 +47,8 @@ export const UpdateOrder: FC = () => {
   const isUnSafeExit = boolean('isUnSafeExit', false);
 
   return (
-    <Router initialEntries={['/order/an-id']}>
-      <Route path="/order/:orderID">
+    <Router initialEntries={['/orders/an-id']}>
+      <Route path="/orders/:orderID">
         <PureOrderFormModal isUnSafeExit={isUnSafeExit} {...actionsData} />
       </Route>
     </Router>
@@ -56,7 +56,7 @@ export const UpdateOrder: FC = () => {
 };
 
 export default {
-  title: 'OrderFormModal',
+  title: 'orderForm/OrderFormModal',
   component: PureOrderFormModal,
   decorators: [
     story => <Provider store={store}>{story()}</Provider>

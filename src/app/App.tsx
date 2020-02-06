@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import styled from 'styled-components';
-import NewOrderButton from '../features/order/NewOrderButton';
-import OrderList from '../features/order/OrderList';
-import OrderFormModal from '../features/order/OrderFormModal';
+import NewOrderButton from '../features/ordersList/NewOrderButton';
+import OrdersList from '../features/ordersList/OrdersList';
+import OrderFormModal from '../features/orderForm/OrderFormModal';
 
 const Wrapper = styled.div`
   max-width: 800px;
@@ -14,9 +14,9 @@ const Wrapper = styled.div`
 const App: FC = () => (
   <Wrapper>
     <NewOrderButton />
-    <OrderList />
+    <OrdersList />
     <Switch>
-      <Route path={['/new', '/order/:orderID']}>
+      <Route path={['/new', '/orders/:orderID']}>
         <OrderFormModal />
       </Route>
       <Redirect to="/" />

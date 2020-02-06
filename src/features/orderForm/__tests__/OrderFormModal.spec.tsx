@@ -4,17 +4,17 @@ import userEvent from '@testing-library/user-event';
 import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
 import { MemoryRouter as Router, Route } from 'react-router-dom';
-import rootReducer from '../../../../app/rootReducer';
-import OrderForm from '../../OrderFormModal/OrderForm';
-import OrderFormModal from '../../OrderFormModal';
+import rootReducer from '../../../app/rootReducer';
+import OrderForm from '../OrderForm';
+import OrderFormModal from '../OrderFormModal';
 
-jest.mock('../../OrderFormModal/OrderForm', () => jest.fn(() => null));
+jest.mock('../OrderForm', () => jest.fn(() => null));
 
 describe('OrderFormModal component', () => {
   it('should render modal when url is /new', () => {
     const store = configureStore({
       reducer: rootReducer,
-      preloadedState: { order: { list: [] } }
+      preloadedState: { orders: { list: [] } }
     });
 
     const { getByTestId } = render(
@@ -33,7 +33,7 @@ describe('OrderFormModal component', () => {
   it('should close modal when click overlay', () => {
     const store = configureStore({
       reducer: rootReducer,
-      preloadedState: { order: { list: [] } }
+      preloadedState: { orders: { list: [] } }
     });
 
     const { getByTestId } = render(
@@ -69,7 +69,7 @@ describe('OrderFormModal component', () => {
 
     const store = configureStore({
       reducer: rootReducer,
-      preloadedState: { order: { list: [] } }
+      preloadedState: { orders: { list: [] } }
     });
 
     const { getByTestId } = render(

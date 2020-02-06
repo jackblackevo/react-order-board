@@ -2,10 +2,10 @@ import React, { useState, useRef, useEffect, useCallback, FC } from 'react';
 import { createPortal } from 'react-dom';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
-import debounce from '../../../utils/debounce';
-import Overlay from './Overlay';
-import Container from './Container';
-import ErrorMessage from './ErrorMessage';
+import debounce from '../../utils/debounce';
+import ModalOverlay from './ModalOverlay';
+import ModalContainer from './ModalContainer';
+import FormErrorMessage from './FormErrorMessage';
 import OrderForm from './OrderForm';
 
 const TopRow = styled.div`
@@ -27,19 +27,19 @@ export const PureOrderFormModal: FC<Props> = ({
   onOverlayClick,
   onUserInteractedChange
 }) => (
-  <Overlay data-testid="overlay" onClick={onOverlayClick}>
-    <Container
+  <ModalOverlay data-testid="overlay" onClick={onOverlayClick}>
+    <ModalContainer
       onClick={event => event.stopPropagation()}
       isShakeModal={isUnSafeExit}
     >
       <TopRow>
         {isUnSafeExit && (
-          <ErrorMessage>尚未送出編輯，放棄請按「取消」</ErrorMessage>
+          <FormErrorMessage>尚未送出編輯，放棄請按「取消」</FormErrorMessage>
         )}
       </TopRow>
       <OrderForm onUserInteractedChange={onUserInteractedChange} />
-    </Container>
-  </Overlay>
+    </ModalContainer>
+  </ModalOverlay>
 );
 
 export default () => {

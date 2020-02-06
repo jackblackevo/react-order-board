@@ -14,22 +14,22 @@ import {
   deleteOrderEpic,
   updateOrderEpic,
   makeOrderByIDSelector
-} from '../orderSlice';
+} from '../ordersSlice';
 
-describe('order slice', () => {
+describe('orders slice', () => {
   describe('actions', () => {
     it('should return addOrder action', () => {
       expect(
         addOrder({ name: 'test order', price: 999, note: 'something to note' })
       ).toEqual({
-        type: 'order/addOrder',
+        type: 'orders/addOrder',
         payload: { name: 'test order', price: 999, note: 'something to note' }
       });
     });
 
     it('should return deleteOrder action', () => {
       expect(deleteOrder('an-id')).toEqual({
-        type: 'order/deleteOrder',
+        type: 'orders/deleteOrder',
         payload: 'an-id'
       });
     });
@@ -43,7 +43,7 @@ describe('order slice', () => {
           note: 'something to note'
         })
       ).toEqual({
-        type: 'order/updateOrder',
+        type: 'orders/updateOrder',
         payload: {
           id: 'an-id',
           name: 'test order',
@@ -57,7 +57,7 @@ describe('order slice', () => {
       const error = new Error('something wrong');
 
       expect(apiError(error)).toEqual({
-        type: 'order/apiError',
+        type: 'orders/apiError',
         payload: error
       });
     });
@@ -73,7 +73,7 @@ describe('order slice', () => {
           modificationDate: 1579000000000
         })
       ).toEqual({
-        type: 'order/addOrderFulfilled',
+        type: 'orders/addOrderFulfilled',
         payload: {
           id: 'an-id',
           name: 'test order',
@@ -87,7 +87,7 @@ describe('order slice', () => {
 
     it('should return deleteOrderFulfilled action', () => {
       expect(deleteOrderFulfilled('an-id')).toEqual({
-        type: 'order/deleteOrderFulfilled',
+        type: 'orders/deleteOrderFulfilled',
         payload: 'an-id'
       });
     });
@@ -103,7 +103,7 @@ describe('order slice', () => {
           modificationDate: 1579000000000
         })
       ).toEqual({
-        type: 'order/updateOrderFulfilled',
+        type: 'orders/updateOrderFulfilled',
         payload: {
           id: 'an-id',
           name: 'test order',
@@ -126,7 +126,7 @@ describe('order slice', () => {
         reducer(
           { list: [] },
           {
-            type: 'order/addOrderFulfilled',
+            type: 'orders/addOrderFulfilled',
             payload: {
               id: 'an-id',
               creationDate: 1579000000000,
@@ -167,7 +167,7 @@ describe('order slice', () => {
             ]
           },
           {
-            type: 'order/deleteOrderFulfilled',
+            type: 'orders/deleteOrderFulfilled',
             payload: 'an-id'
           }
         )
@@ -190,7 +190,7 @@ describe('order slice', () => {
             ]
           },
           {
-            type: 'order/updateOrderFulfilled',
+            type: 'orders/updateOrderFulfilled',
             payload: {
               id: 'an-id',
               creationDate: 1579000000000,
@@ -229,13 +229,13 @@ describe('order slice', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         const actionInput$ = hot('a', {
           a: {
-            type: 'order/addOrder',
+            type: 'orders/addOrder',
             payload: { name: 'order name', price: 111, note: '' }
           }
         });
         const stateInput$ = hot('s', {
           s: {
-            order: {
+            orders: {
               list: [] as {
                 id: string;
                 creationDate: number;
@@ -250,7 +250,7 @@ describe('order slice', () => {
 
         const action$ = new ActionsObservable(actionInput$);
         const state$ = new StateObservable(stateInput$, {
-          order: { list: [] }
+          orders: { list: [] }
         });
         const dependenciesMock = {
           ...dependencies,
@@ -271,7 +271,7 @@ describe('order slice', () => {
 
         expectObservable(output$).toBe('-a', {
           a: {
-            type: 'order/addOrderFulfilled',
+            type: 'orders/addOrderFulfilled',
             payload: {
               id: 'an-id',
               creationDate: 1579000000000,
@@ -288,11 +288,11 @@ describe('order slice', () => {
     it('should handle deleteOrder', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         const actionInput$ = hot('a', {
-          a: { type: 'order/deleteOrder', payload: 'an-id' }
+          a: { type: 'orders/deleteOrder', payload: 'an-id' }
         });
         const stateInput$ = hot('s', {
           s: {
-            order: {
+            orders: {
               list: [] as {
                 id: string;
                 creationDate: number;
@@ -307,7 +307,7 @@ describe('order slice', () => {
 
         const action$ = new ActionsObservable(actionInput$);
         const state$ = new StateObservable(stateInput$, {
-          order: { list: [] }
+          orders: { list: [] }
         });
         const dependenciesMock = {
           ...dependencies,
@@ -319,7 +319,7 @@ describe('order slice', () => {
         const output$ = deleteOrderEpic(action$, state$, dependenciesMock);
 
         expectObservable(output$).toBe('-a', {
-          a: { type: 'order/deleteOrderFulfilled', payload: 'an-id' }
+          a: { type: 'orders/deleteOrderFulfilled', payload: 'an-id' }
         });
       });
     });
@@ -328,7 +328,7 @@ describe('order slice', () => {
       testScheduler.run(({ hot, cold, expectObservable }) => {
         const actionInput$ = hot('a', {
           a: {
-            type: 'order/updateOrder',
+            type: 'orders/updateOrder',
             payload: {
               id: 'an-id',
               name: 'modify name',
@@ -339,7 +339,7 @@ describe('order slice', () => {
         });
         const stateInput$ = hot('s', {
           s: {
-            order: {
+            orders: {
               list: [] as {
                 id: string;
                 creationDate: number;
@@ -354,7 +354,7 @@ describe('order slice', () => {
 
         const action$ = new ActionsObservable(actionInput$);
         const state$ = new StateObservable(stateInput$, {
-          order: { list: [] }
+          orders: { list: [] }
         });
         const dependenciesMock = {
           ...dependencies,
@@ -374,7 +374,7 @@ describe('order slice', () => {
 
         expectObservable(output$).toBe('-a', {
           a: {
-            type: 'order/updateOrderFulfilled',
+            type: 'orders/updateOrderFulfilled',
             payload: {
               id: 'an-id',
               creationDate: 1578888888888,
@@ -392,7 +392,7 @@ describe('order slice', () => {
   describe('selectors', () => {
     it('should return same order when give same id', () => {
       const state = {
-        order: {
+        orders: {
           list: [
             {
               id: 'id-1',
@@ -423,10 +423,10 @@ describe('order slice', () => {
       };
       const selectOrderByID = makeOrderByIDSelector();
 
-      expect(selectOrderByID(state, 'id-2')).toEqual(state.order.list[1]);
-      expect(selectOrderByID(state, 'id-2')).toEqual(state.order.list[1]);
-      expect(selectOrderByID(state, 'id-3')).toEqual(state.order.list[2]);
-      expect(selectOrderByID(state, 'id-3')).toEqual(state.order.list[2]);
+      expect(selectOrderByID(state, 'id-2')).toEqual(state.orders.list[1]);
+      expect(selectOrderByID(state, 'id-2')).toEqual(state.orders.list[1]);
+      expect(selectOrderByID(state, 'id-3')).toEqual(state.orders.list[2]);
+      expect(selectOrderByID(state, 'id-3')).toEqual(state.orders.list[2]);
     });
   });
 });

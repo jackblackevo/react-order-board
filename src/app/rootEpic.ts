@@ -4,7 +4,7 @@ import {
   addOrderEpic,
   deleteOrderEpic,
   updateOrderEpic
-} from '../features/order/orderSlice';
+} from '../features/ordersList/ordersSlice';
 import { postOrder, deleteOrder, patchOrder } from '../api/orders';
 
 const rootEpic = combineEpics(addOrderEpic, deleteOrderEpic, updateOrderEpic);

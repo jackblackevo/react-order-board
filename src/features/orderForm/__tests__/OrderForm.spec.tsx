@@ -11,16 +11,16 @@ import {
   RouteComponentProps
 } from 'react-router-dom';
 import 'mutationobserver-shim';
-import rootReducer from '../../../../app/rootReducer';
-import rootEpic, { dependencies } from '../../../../app/rootEpic';
-import OrderForm from '../../OrderFormModal/OrderForm';
+import rootReducer from '../../../app/rootReducer';
+import rootEpic, { dependencies } from '../../../app/rootEpic';
+import OrderForm from '../OrderForm';
 
 describe('OrderForm component', () => {
   it('should render empty form when url is /new', () => {
     const store = configureStore({
       reducer: rootReducer,
       preloadedState: {
-        order: {
+        orders: {
           list: [
             {
               id: 'an-id',
@@ -50,11 +50,11 @@ describe('OrderForm component', () => {
     expect((getByTestId('note') as HTMLInputElement).value).toBe('');
   });
 
-  it('should render form when url is /order/:orderID and can found an order from store', () => {
+  it('should render form when url is /orders/:orderID and can found an order from store', () => {
     const store = configureStore({
       reducer: rootReducer,
       preloadedState: {
-        order: {
+        orders: {
           list: [
             {
               id: 'an-id',
@@ -71,8 +71,8 @@ describe('OrderForm component', () => {
 
     const { getByTestId } = render(
       <Provider store={store}>
-        <Router initialEntries={['/order/an-id']}>
-          <Route path="/order/:orderID">
+        <Router initialEntries={['/orders/an-id']}>
+          <Route path="/orders/:orderID">
             <OrderForm onUserInteractedChange={() => {}} />
           </Route>
         </Router>
@@ -90,7 +90,7 @@ describe('OrderForm component', () => {
     const store = configureStore({
       reducer: rootReducer,
       preloadedState: {
-        order: {
+        orders: {
           list: [
             {
               id: 'an-id',
@@ -109,8 +109,8 @@ describe('OrderForm component', () => {
 
     render(
       <Provider store={store}>
-        <Router initialEntries={['/order/xxx-id']}>
-          <Route path="/order/:orderID">
+        <Router initialEntries={['/orders/xxx-id']}>
+          <Route path="/orders/:orderID">
             <OrderForm onUserInteractedChange={() => {}} />
           </Route>
           <Route
@@ -130,7 +130,7 @@ describe('OrderForm component', () => {
   it('should link to / when cancel', async () => {
     const store = configureStore({
       reducer: rootReducer,
-      preloadedState: { order: { list: [] } }
+      preloadedState: { orders: { list: [] } }
     });
 
     let locationObj: RouteComponentProps['location'] | undefined;
@@ -161,13 +161,13 @@ describe('OrderForm component', () => {
     expect(locationObj?.pathname).toBe('/');
   });
 
-  it('should render form when url is /order/:orderID and can found an order from store', async () => {
+  it('should render form when url is /orders/:orderID and can found an order from store', async () => {
     const handleUserInteractedChange = jest.fn();
 
     const store = configureStore({
       reducer: rootReducer,
       preloadedState: {
-        order: {
+        orders: {
           list: [
             {
               id: 'an-id',
@@ -184,8 +184,8 @@ describe('OrderForm component', () => {
 
     const { getByTestId } = render(
       <Provider store={store}>
-        <Router initialEntries={['/order/an-id']}>
-          <Route path="/order/:orderID">
+        <Router initialEntries={['/orders/an-id']}>
+          <Route path="/orders/:orderID">
             <OrderForm onUserInteractedChange={handleUserInteractedChange} />
           </Route>
         </Router>
@@ -216,7 +216,7 @@ describe('OrderForm component', () => {
     const epicMiddleware = createEpicMiddleware({ dependencies });
     const store = configureStore({
       reducer: rootReducer,
-      preloadedState: { order: { list: [] } },
+      preloadedState: { orders: { list: [] } },
       middleware: [epicMiddleware]
     });
     epicMiddleware.run(rootEpic);
@@ -236,13 +236,13 @@ describe('OrderForm component', () => {
       await userEvent.type(getByTestId('price'), '111');
     });
 
-    expect(store.getState().order.list).toEqual([]);
+    expect(store.getState().orders.list).toEqual([]);
 
     await act(async () => {
       userEvent.click(getByTestId('submit'));
     });
 
-    expect(store.getState().order.list).toEqual([
+    expect(store.getState().orders.list).toEqual([
       {
         id: 'an-uuid',
         creationDate: 1579000000000,
@@ -271,7 +271,7 @@ describe('OrderForm component', () => {
     const store = configureStore({
       reducer: rootReducer,
       preloadedState: {
-        order: {
+        orders: {
           list: [
             {
               id: 'an-id',
@@ -290,8 +290,8 @@ describe('OrderForm component', () => {
 
     const { getByTestId } = render(
       <Provider store={store}>
-        <Router initialEntries={['/order/an-id']}>
-          <Route path="/order/:orderID">
+        <Router initialEntries={['/orders/an-id']}>
+          <Route path="/orders/:orderID">
             <OrderForm onUserInteractedChange={() => {}} />
           </Route>
         </Router>
@@ -309,7 +309,7 @@ describe('OrderForm component', () => {
       await userEvent.type(getByTestId('price'), '111');
     });
 
-    expect(store.getState().order.list).toEqual([
+    expect(store.getState().orders.list).toEqual([
       {
         id: 'an-id',
         creationDate: 1578888888888,
@@ -324,7 +324,7 @@ describe('OrderForm component', () => {
       userEvent.click(getByTestId('submit'));
     });
 
-    expect(store.getState().order.list).toEqual([
+    expect(store.getState().orders.list).toEqual([
       {
         id: 'an-id',
         creationDate: 1578888888888,
@@ -347,7 +347,7 @@ describe('OrderForm component', () => {
     const store = configureStore({
       reducer: rootReducer,
       preloadedState: {
-        order: {
+        orders: {
           list: [
             {
               id: 'an-id',
@@ -366,8 +366,8 @@ describe('OrderForm component', () => {
 
     const { getByTestId } = render(
       <Provider store={store}>
-        <Router initialEntries={['/order/an-id']}>
-          <Route path="/order/:orderID">
+        <Router initialEntries={['/orders/an-id']}>
+          <Route path="/orders/:orderID">
             <OrderForm onUserInteractedChange={() => {}} />
           </Route>
         </Router>
@@ -380,7 +380,7 @@ describe('OrderForm component', () => {
       'something to note'
     );
 
-    expect(store.getState().order.list).toEqual([
+    expect(store.getState().orders.list).toEqual([
       {
         id: 'an-id',
         creationDate: 1578888888888,
@@ -395,7 +395,7 @@ describe('OrderForm component', () => {
       userEvent.click(getByTestId('delete'));
     });
 
-    expect(store.getState().order.list).toEqual([]);
+    expect(store.getState().orders.list).toEqual([]);
 
     deleteOrderApiMock.mockRestore();
   });
@@ -415,7 +415,7 @@ describe('OrderForm component', () => {
     const epicMiddleware = createEpicMiddleware({ dependencies });
     const store = configureStore({
       reducer: rootReducer,
-      preloadedState: { order: { list: [] } },
+      preloadedState: { orders: { list: [] } },
       middleware: [epicMiddleware]
     });
     epicMiddleware.run(rootEpic);
@@ -447,13 +447,13 @@ describe('OrderForm component', () => {
       'note something'
     );
 
-    expect(store.getState().order.list).toEqual([]);
+    expect(store.getState().orders.list).toEqual([]);
 
     await act(async () => {
       userEvent.click(getByTestId('submit'));
     });
 
-    expect(store.getState().order.list).toEqual([]);
+    expect(store.getState().orders.list).toEqual([]);
 
     postOrderApiMock.mockRestore();
   });

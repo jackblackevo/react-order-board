@@ -94,7 +94,7 @@ export const PureNewOrderButton: FC<Props> = ({
 );
 
 export default () => {
-  const orderList = useSelector((state: RootState) => state.order.list);
+  const ordersList = useSelector((state: RootState) => state.orders.list);
 
   const history = useHistory();
   const handleButtonClick = () => {
@@ -103,7 +103,7 @@ export default () => {
 
   return (
     <PureNewOrderButton
-      isGlowingVisible={orderList.length === 0}
+      isGlowingVisible={ordersList.length === 0}
       onClick={handleButtonClick}
     />
   );

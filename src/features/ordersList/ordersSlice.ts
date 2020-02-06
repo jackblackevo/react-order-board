@@ -25,18 +25,18 @@ interface Order {
 
 export const addOrder = createAction<
   Pick<OrderItem, 'name' | 'price' | 'note'>
->('order/addOrder');
+>('orders/addOrder');
 
-export const deleteOrder = createAction<OrderItem['id']>('order/deleteOrder');
+export const deleteOrder = createAction<OrderItem['id']>('orders/deleteOrder');
 
 export const updateOrder = createAction<
   Omit<OrderItem, 'creationDate' | 'modificationDate'>
->('order/updateOrder');
+>('orders/updateOrder');
 
-export const apiError = createAction<Error>('order/apiError');
+export const apiError = createAction<Error>('orders/apiError');
 
-const orderSlice = createSlice({
-  name: 'order',
+const ordersSlice = createSlice({
+  name: 'orders',
   initialState: { list: [] } as Order,
   reducers: {
     addOrderFulfilled: (
@@ -76,12 +76,12 @@ const orderSlice = createSlice({
   }
 });
 
-export const { reducer } = orderSlice;
+export const { reducer } = ordersSlice;
 export const {
   addOrderFulfilled,
   deleteOrderFulfilled,
   updateOrderFulfilled
-} = orderSlice.actions;
+} = ordersSlice.actions;
 
 export const addOrderEpic: Epic<
   ReturnType<typeof addOrder>,
@@ -134,8 +134,8 @@ export const updateOrderEpic: Epic<
 export const makeOrderByIDSelector = () =>
   createSelector(
     [
-      (state: RootState) => state.order.list,
+      (state: RootState) => state.orders.list,
       (_state: RootState, id: string) => id
     ],
-    (orderList, id) => orderList.find(order => order.id === id)
+    (ordersList, id) => ordersList.find(order => order.id === id)
   );

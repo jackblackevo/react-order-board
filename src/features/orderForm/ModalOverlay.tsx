@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const Overlay = styled.div`
+const ModalOverlay = styled.div`
   position: fixed;
   top: 0;
   bottom: 0;
@@ -16,4 +16,4 @@ const Overlay = styled.div`
   z-index: 999;
 `;
 
-export default Overlay;
+export default ModalOverlay;

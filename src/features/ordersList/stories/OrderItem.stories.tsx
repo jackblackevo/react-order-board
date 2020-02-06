@@ -26,6 +26,6 @@ export const Default: FC = () => {
 };
 
 export default {
-  title: 'OrderItem',
+  title: 'ordersList/OrderItem',
   component: PureOrderItem
 };

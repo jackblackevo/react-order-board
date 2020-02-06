@@ -31,7 +31,7 @@ describe('OrderItem component', () => {
     expect(getByTestId('note').textContent).toBe('something to note');
   });
 
-  it('should link to /order/:orderID when click row', () => {
+  it('should link to /orders/:orderID when click row', () => {
     const order = {
       id: 'an-id',
       creationDate: 1579000000000,
@@ -60,6 +60,6 @@ describe('OrderItem component', () => {
 
     userEvent.click(getByTestId('row'));
 
-    expect(locationObj?.pathname).toBe('/order/an-id');
+    expect(locationObj?.pathname).toBe('/orders/an-id');
   });
 });

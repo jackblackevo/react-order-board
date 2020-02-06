@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { action } from '@storybook/addon-actions';
-import { PureOrderForm } from '../../OrderFormModal/OrderForm';
+import { PureOrderForm } from '../OrderForm';
 
 const orderFormData = {
   name: 'test order',
@@ -31,6 +31,6 @@ export const UpdateOrder: FC = () => (
 );
 
 export default {
-  title: 'OrderFormModal/OrderForm',
+  title: 'orderForm/OrderForm',
   component: PureOrderForm
 };

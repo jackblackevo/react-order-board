@@ -4,19 +4,19 @@ import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
 import { MemoryRouter as Router } from 'react-router-dom';
 import rootReducer from '../../../app/rootReducer';
-import OrderList from '../OrderList';
+import OrdersList from '../OrdersList';
 
-describe('OrderList component', () => {
+describe('OrdersList component', () => {
   it('should render nothing when order list is empty', () => {
     const store = configureStore({
       reducer: rootReducer,
-      preloadedState: { order: { list: [] } }
+      preloadedState: { orders: { list: [] } }
     });
 
     const { getByTestId } = render(
       <Provider store={store}>
         <Router>
-          <OrderList />
+          <OrdersList />
         </Router>
       </Provider>
     );
@@ -28,7 +28,7 @@ describe('OrderList component', () => {
     const store = configureStore({
       reducer: rootReducer,
       preloadedState: {
-        order: {
+        orders: {
           list: [
             {
               id: 'an-id',
@@ -46,7 +46,7 @@ describe('OrderList component', () => {
     const { getByTestId } = render(
       <Provider store={store}>
         <Router>
-          <OrderList />
+          <OrdersList />
         </Router>
       </Provider>
     );

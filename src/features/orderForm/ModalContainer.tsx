@@ -22,7 +22,7 @@ const shakeAnimation = css`
   perspective: 1000px;
 `;
 
-const Container = styled.div<{ isShakeModal: boolean }>`
+const ModalContainer = styled.div<{ isShakeModal: boolean }>`
   padding: 0 15px 20px;
 
   max-width: 640px;
@@ -35,4 +35,4 @@ const Container = styled.div<{ isShakeModal: boolean }>`
   ${props => (props.isShakeModal ? shakeAnimation : '')}
 `;
 
-export default Container;
+export default ModalContainer;
