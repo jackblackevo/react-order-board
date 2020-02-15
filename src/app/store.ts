@@ -5,7 +5,7 @@ import rootEpic, { dependencies } from './rootEpic';
 import { load, persistStateMiddleware } from './statePersistent';
 
 const preloadedState = {
-  order: {
+  orders: {
     list: [
       {
         id: 'id-1',
