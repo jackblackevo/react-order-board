@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "2e2e909fefa96af3687630bfc596c38a",
+    "revision": "51250705e9ada84b59373277772dc4c7",
     "url": "/react-order-board/index.html"
   },
   {
@@ -12,8 +12,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/react-order-board/static/js/2.f5ca4dbd.chunk.js.LICENSE"
   },
   {
-    "revision": "941242fa981f82ee515c",
-    "url": "/react-order-board/static/js/main.1c621506.chunk.js"
+    "revision": "87272926783d631edcd7",
+    "url": "/react-order-board/static/js/main.99d0bbb0.chunk.js"
   },
   {
     "revision": "6e133769afd66e65fbd1",
