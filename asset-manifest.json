@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.js": "/react-order-board/static/js/main.99d0bbb0.chunk.js",
-    "main.js.map": "/react-order-board/static/js/main.99d0bbb0.chunk.js.map",
+    "main.js": "/react-order-board/static/js/main.82813d6a.chunk.js",
+    "main.js.map": "/react-order-board/static/js/main.82813d6a.chunk.js.map",
     "runtime-main.js": "/react-order-board/static/js/runtime-main.18174296.js",
     "runtime-main.js.map": "/react-order-board/static/js/runtime-main.18174296.js.map",
     "static/js/2.f5ca4dbd.chunk.js": "/react-order-board/static/js/2.f5ca4dbd.chunk.js",
     "static/js/2.f5ca4dbd.chunk.js.map": "/react-order-board/static/js/2.f5ca4dbd.chunk.js.map",
     "index.html": "/react-order-board/index.html",
-    "precache-manifest.d4c99ca1d39ea4d6050da1481423fa68.js": "/react-order-board/precache-manifest.d4c99ca1d39ea4d6050da1481423fa68.js",
+    "precache-manifest.f1a4389baaec6f1e05a2717bb2615af1.js": "/react-order-board/precache-manifest.f1a4389baaec6f1e05a2717bb2615af1.js",
     "service-worker.js": "/react-order-board/service-worker.js",
     "static/js/2.f5ca4dbd.chunk.js.LICENSE": "/react-order-board/static/js/2.f5ca4dbd.chunk.js.LICENSE"
   },
   "entrypoints": [
     "static/js/runtime-main.18174296.js",
     "static/js/2.f5ca4dbd.chunk.js",
-    "static/js/main.99d0bbb0.chunk.js"
+    "static/js/main.82813d6a.chunk.js"
   ]
 }

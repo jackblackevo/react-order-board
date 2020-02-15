@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/react-order-board/precache-manifest.d4c99ca1d39ea4d6050da1481423fa68.js"
+  "/react-order-board/precache-manifest.f1a4389baaec6f1e05a2717bb2615af1.js"
 );
 
 self.addEventListener('message', (event) => {
