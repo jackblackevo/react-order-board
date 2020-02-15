@@ -31,7 +31,7 @@ render(
   <>
     <GlobalStyle />
     <Provider store={store}>
-      <Router basename="/react-order-board">
+      <Router basename={process.env.PUBLIC_URL}>
         <App />
       </Router>
     </Provider>
