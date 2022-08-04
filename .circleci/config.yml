@@ -16,13 +16,13 @@ jobs:
       - checkout
       # Look for existing cache and restore if found
       - restore_cache:
-          key: v1-deps-{{ checksum "package-lock.json" }}
+          key: &cache-key v1-deps-{{ checksum "package-lock.json" }}
       - run:
           name: Install Dependencies
           command: npm install
       # Save any changes to the cache
       - save_cache:
-          key: v1-deps-{{ checksum "package-lock.json" }}
+          key: *cache-key
           paths:
             - node_modules
   test:
@@ -31,7 +31,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: v1-deps-{{ checksum "package-lock.json" }}
+          key: *cache-key
       - run:
           name: Run Test Cases
           command: npm run test
