@@ -15,13 +15,33 @@ jobs:
     steps:
       - checkout
       # Look for existing cache and restore if found
+      - restore_cache:
+          key: v1-deps-{{ checksum "package-lock.json" }}
       - run:
           name: Install Dependencies
           command: npm install
+      # Save any changes to the cache
+      - save_cache:
+          key: v1-deps-{{ checksum "package-lock.json" }}
+          paths:
+            - node_modules
+  test:
+    docker:
+      - image: cimg/node:12.22.12
+    steps:
+      - checkout
+      - restore_cache:
+          key: v1-deps-{{ checksum "package-lock.json" }}
+      - run:
+          name: Run Test Cases
+          command: npm run test
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
-  checkout:
+  setup-test:
     jobs:
       - setup
+      - test:
+          requires:
+            - setup
