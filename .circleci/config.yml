@@ -45,11 +45,40 @@ jobs:
       - run:
           name: Run Build Bundle
           command: npm run build
+      # Persist the specified paths (workspace/echo-output) into the workspace for use in downstream job.
+      - persist_to_workspace:
+          # Must be an absolute path, or relative path from working_directory. This is a directory on the container which is
+          # taken to be the root directory of the workspace.
+          root: .
+          # Must be relative path from root
+          paths:
+            - build
+  deploy:
+    docker:
+      - image: *docker-image
+    steps:
+      - checkout
+      - restore_cache:
+          key: *cache-key
+      - attach_workspace:
+          # Must be absolute path or relative path from working_directory
+          at: .
+      - run:
+          name: Configure Git User Infomations
+          command: |
+            git config user.name "ryan.c"
+            git config user.email "jackblackevo@gmail.com"
+      - add_ssh_keys:
+          fingerprints:
+            - "c1:b9:40:8f:5d:74:93:b7:d6:8e:a9:5f:18:27:70:71"
+      - run:
+          name: Deploy to GitHub Pages
+          command: npx gh-pages -d build -m "Deploy to GitHub Pages [skip ci]"
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
-  setup-test-build:
+  setup-test-build-deploy:
     jobs:
       - setup
       - test:
@@ -58,3 +87,7 @@ workflows:
       - build:
           requires:
             - setup
+      - deploy:
+          requires:
+            - test
+            - build
