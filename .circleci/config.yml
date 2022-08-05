@@ -16,15 +16,15 @@ jobs:
       - checkout
       # Look for existing cache and restore if found
       - restore_cache:
-          key: &cache-key v1-deps-{{ checksum "package-lock.json" }}
+          key: &cache-key v2-deps-{{ checksum "package-lock.json" }}
       - run:
           name: Install Dependencies
-          command: npm install
+          command: npm ci
       # Save any changes to the cache
       - save_cache:
           key: *cache-key
           paths:
-            - node_modules
+            - ~/.npm
   test:
     docker:
       - image: *docker-image
@@ -32,6 +32,9 @@ jobs:
       - checkout
       - restore_cache:
           key: *cache-key
+      - run:
+          name: Install Dependencies
+          command: npm ci
       - run:
           name: Run Test Cases
           command: npm run test
@@ -42,6 +45,9 @@ jobs:
       - checkout
       - restore_cache:
           key: *cache-key
+      - run:
+          name: Install Dependencies
+          command: npm ci
       - run:
           name: Run Build Bundle
           command: npm run build
