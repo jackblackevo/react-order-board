@@ -2,52 +2,35 @@
 # See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
 
+orbs:
+  node: circleci/node@5.0.2
+
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
   setup:
-    # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
-    # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
-    docker:
-      - image: &docker-image cimg/node:12.22.12
+    executor: &executor
+      name: node/default
+      tag: 12.22.12
     # Add steps to the job
     # See: https://circleci.com/docs/2.0/configuration-reference/#steps
     steps:
       - checkout
       # Look for existing cache and restore if found
-      - restore_cache:
-          key: &cache-key v2-deps-{{ checksum "package-lock.json" }}
-      - run:
-          name: Install Dependencies
-          command: npm ci
-      # Save any changes to the cache
-      - save_cache:
-          key: *cache-key
-          paths:
-            - ~/.npm
+      - node/install-packages
   test:
-    docker:
-      - image: *docker-image
+    executor: *executor
     steps:
       - checkout
-      - restore_cache:
-          key: *cache-key
-      - run:
-          name: Install Dependencies
-          command: npm ci
+      - node/install-packages
       - run:
           name: Run Test Cases
           command: npm run test
   build:
-    docker:
-      - image: *docker-image
+    executor: *executor
     steps:
       - checkout
-      - restore_cache:
-          key: *cache-key
-      - run:
-          name: Install Dependencies
-          command: npm ci
+      - node/install-packages
       - run:
           name: Run Build Bundle
           command: npm run build
@@ -60,12 +43,10 @@ jobs:
           paths:
             - build
   deploy:
-    docker:
-      - image: *docker-image
+    executor: *executor
     steps:
       - checkout
-      - restore_cache:
-          key: *cache-key
+      - node/install-packages
       - attach_workspace:
           # Must be absolute path or relative path from working_directory
           at: .
