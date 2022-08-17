@@ -8,18 +8,12 @@ orbs:
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
-  setup:
+  test:
     executor: &executor
       name: node/default
       tag: 12.22.12
     # Add steps to the job
     # See: https://circleci.com/docs/2.0/configuration-reference/#steps
-    steps:
-      - checkout
-      # Look for existing cache and restore if found
-      - node/install-packages
-  test:
-    executor: *executor
     steps:
       - checkout
       - node/install-packages
@@ -67,13 +61,8 @@ jobs:
 workflows:
   setup-test-build-deploy:
     jobs:
-      - setup
-      - test:
-          requires:
-            - setup
-      - build:
-          requires:
-            - setup
+      - test
+      - build
       - deploy:
           requires:
             - test
